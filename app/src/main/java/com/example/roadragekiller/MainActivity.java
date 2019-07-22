@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
         // checks if we have location permission
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5000, this);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
 
