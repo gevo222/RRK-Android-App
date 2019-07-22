@@ -4,4 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="start_button">Start</string>
+    <string name="stats">Stats</string>
+    <string name="setting">Settings</string>
+
 </resources>

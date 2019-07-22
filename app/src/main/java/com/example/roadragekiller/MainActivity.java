@@ -27,13 +27,10 @@ public class MainActivity extends Activity implements LocationListener {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;
@@ -81,7 +78,7 @@ public class MainActivity extends Activity implements LocationListener {
         TextView txt = (TextView) findViewById(R.id.userSpeed);
 
         if (location == null) {
-           // txt.setText("-.- m/s");
+           txt.setText("-.- m/s");
         }
         else{
             float nCurrentSpeed = location.getSpeed();
