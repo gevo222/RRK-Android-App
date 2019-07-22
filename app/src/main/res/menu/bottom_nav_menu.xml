@@ -4,19 +4,19 @@
     <item
         android:id="@+id/navigation_home"
         android:enabled="true"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_baseline_directions_car_24px"
         android:title="@string/title_home"
         android:visible="true" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_baseline_assignment_24px"
         android:title="@string/stats"
         android:visible="true" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_baseline_settings_20px"
         android:title="@string/setting"
         android:visible="true" />
 
