@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends Activity implements LocationListener {
     private TextView mTextMessage;
 
@@ -98,8 +100,9 @@ public class MainActivity extends Activity implements LocationListener {
         }
         else{
             float nCurrentSpeed = location.getSpeed();
+             DecimalFormat df2 = new DecimalFormat("#.##");
 
-            txt.setText(nCurrentSpeed + " m/s");
+            txt.setText(df2.format(nCurrentSpeed/1.944 )+ " m/s");
         }
 
     }
