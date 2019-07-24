@@ -77,6 +77,8 @@ public class MainActivity extends Activity implements LocationListener {
             // When user clicks start button do this
             public void onClick(View view) {
                 TextView test = findViewById(R.id.button_settings);
+                text_meters.setVisibility(View.INVISIBLE);
+                text_mph.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
                 startActivity(intent);
                 //test.setVisibility(View.VISIBLE);           // speed pops up
