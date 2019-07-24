@@ -6,4 +6,6 @@
     <string name="start_button">Start</string>
     <string name="stop_button">Start</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="stats">Stats</string>
+    <string name="settings">Settings</string>
 </resources>
