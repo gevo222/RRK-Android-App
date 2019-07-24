@@ -1,18 +1,13 @@
 package com.example.roadragekiller;
 
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,6 +30,8 @@ public class MainActivity extends Activity implements LocationListener {
 
         // Start button
         final Button startButton = findViewById(R.id.startButton);
+        final Button stopButton = findViewById(R.id.stopButton);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             // When user clicks start button do this
@@ -45,11 +42,24 @@ public class MainActivity extends Activity implements LocationListener {
 
                 test.setVisibility(View.VISIBLE);           // speed pops up
                 startButton.setVisibility(View.INVISIBLE);  // button goes away
-
+                stopButton.setVisibility(View.VISIBLE);
                 onLocationChanged(null);                    // calls the current speed tracker
             }
         });
 
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // When user clicks start button do this
+            public void onClick(View view) {
+
+                TextView test = findViewById(R.id.userSpeed);
+                // speed pops up
+                test.setVisibility(View.INVISIBLE);
+                stopButton.setVisibility(View.INVISIBLE);
+                startButton.setVisibility(View.VISIBLE);
+            }
+        });
         //SettingsActivity not created yet. Uncommented after
 
         final Button settingsButton = findViewById(R.id.button_settings);
