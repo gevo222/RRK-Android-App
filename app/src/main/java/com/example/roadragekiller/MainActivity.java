@@ -38,6 +38,7 @@ public class MainActivity extends Activity implements LocationListener {
         // Start button
         final Button startButton = findViewById(R.id.startButton);
         final Button stopButton = findViewById(R.id.stopButton);
+        Button stats = findViewById(R.id.button_stats);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +88,14 @@ public class MainActivity extends Activity implements LocationListener {
                 //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
 
                 //onLocationChanged(null);                    // calls the current speed tracker
+            }
+        });
+
+        stats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,StatsActivity.class);
+                startActivity(intent);
             }
         });
 
