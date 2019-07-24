@@ -50,6 +50,23 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
 
+        //SettingsActivity not created yet. Uncommented after
+        /*
+        final Button settingsButton = findViewById(R.id.button_settings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // When user clicks start button do this
+            public void onClick(View view) {
+                TextView test = findViewById(R.id.button_settings);
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
+                //test.setVisibility(View.VISIBLE);           // speed pops up
+                //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
+
+                //onLocationChanged(null);                    // calls the current speed tracker
+            }
+        });
+        */
 
 
     }
@@ -78,20 +95,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onProviderEnabled(String s) {
 
 
-        final Button settingsButton = findViewById(R.id.button_settings);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            // When user clicks start button do this
-            public void onClick(View view) {
-                TextView test = findViewById(R.id.button_settings);
-                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
-                startActivity(intent);
-                //test.setVisibility(View.VISIBLE);           // speed pops up
-                //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
 
-                //onLocationChanged(null);                    // calls the current speed tracker
-            }
-        });
     }
 
 
