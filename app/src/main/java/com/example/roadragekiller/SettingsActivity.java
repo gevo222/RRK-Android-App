@@ -35,6 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putBoolean("switch1", switchState1);
                 editor.apply();
+                metric = !metric;
             }
         });
     }

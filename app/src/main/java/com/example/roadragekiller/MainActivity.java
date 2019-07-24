@@ -43,11 +43,9 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
 
 
-
-                if(SettingsActivity.metric) {
+                if (SettingsActivity.metric) {
                     text_meters.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     text_mph.setVisibility(View.VISIBLE);
                 }
                 // speed pops up
@@ -99,17 +97,18 @@ public class MainActivity extends Activity implements LocationListener {
 
         if (location == null) {
             // txt.setText("-.- m/s");
-        }
-        else{
+        } else if (SettingsActivity.metric) {
             float nCurrentSpeed = location.getSpeed();
-            if(SettingsActivity.metric) {
-                meters.setText(nCurrentSpeed + " m/s");
-            }else{
-                mph.setText(nCurrentSpeed*2.23694 + " mph");
-            }
-        }
 
+            meters.setText(nCurrentSpeed + " m/s");
+        } else {
+            float nCurrentSpeed = location.getSpeed();
+
+            mph.setText(nCurrentSpeed * 2.23694 + " mph");
+        }
     }
+
+
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
