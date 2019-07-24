@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
         });
 
         //SettingsActivity not created yet. Uncommented after
-        /*
+
         final Button settingsButton = findViewById(R.id.button_settings);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements LocationListener {
                 //onLocationChanged(null);                    // calls the current speed tracker
             }
         });
-        */
+
 
 
     }
