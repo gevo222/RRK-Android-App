@@ -11,6 +11,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     Switch switch1;
     boolean switchState1;
+    public static boolean metric = false;
 
     SharedPreferences preferences;
 

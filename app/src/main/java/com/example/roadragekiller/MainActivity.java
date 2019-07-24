@@ -27,6 +27,11 @@ public class MainActivity extends Activity implements LocationListener {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
 
+        final TextView text_meters = findViewById(R.id.userSpeed);
+        final TextView text_mph = findViewById(R.id.userSpeed_mph);
+
+        text_meters.setVisibility(View.INVISIBLE);
+        text_mph.setVisibility(View.INVISIBLE);
 
         // Start button
         final Button startButton = findViewById(R.id.startButton);
@@ -37,10 +42,15 @@ public class MainActivity extends Activity implements LocationListener {
             // When user clicks start button do this
             public void onClick(View view) {
 
-                TextView test = findViewById(R.id.userSpeed);
 
 
-                test.setVisibility(View.VISIBLE);           // speed pops up
+                if(SettingsActivity.metric) {
+                    text_meters.setVisibility(View.VISIBLE);
+                }
+                else{
+                    text_mph.setVisibility(View.VISIBLE);
+                }
+                // speed pops up
                 startButton.setVisibility(View.INVISIBLE);  // button goes away
                 stopButton.setVisibility(View.VISIBLE);
                 onLocationChanged(null);                    // calls the current speed tracker
