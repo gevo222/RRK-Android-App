@@ -62,10 +62,9 @@ public class MainActivity extends Activity implements LocationListener {
             @Override
             // When user clicks start button do this
             public void onClick(View view) {
-
-                TextView test = findViewById(R.id.userSpeed);
                 // speed pops up
-                test.setVisibility(View.INVISIBLE);
+                text_mph.setVisibility(View.INVISIBLE);
+                text_meters.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
             }
@@ -93,15 +92,19 @@ public class MainActivity extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        TextView txt = (TextView) findViewById(R.id.userSpeed);
+        TextView meters = findViewById(R.id.userSpeed);
+        TextView mph = findViewById(R.id.userSpeed_mph);
 
         if (location == null) {
             // txt.setText("-.- m/s");
         }
         else{
             float nCurrentSpeed = location.getSpeed();
-
-            txt.setText(nCurrentSpeed + " m/s");
+            if(SettingsActivity.metric) {
+                meters.setText(nCurrentSpeed + " m/s");
+            }else{
+                mph.setText(nCurrentSpeed*2.23694 + " mph");
+            }
         }
 
     }
