@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends Activity implements LocationListener {
 
     @Override
@@ -58,7 +60,7 @@ public class MainActivity extends Activity implements LocationListener {
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            // When user clicks start button do this
+            // When user clicks stop button do this
             public void onClick(View view) {
                 // speed pops up
                 text_mph.setVisibility(View.INVISIBLE);
@@ -77,6 +79,8 @@ public class MainActivity extends Activity implements LocationListener {
                 TextView test = findViewById(R.id.button_settings);
                 text_meters.setVisibility(View.INVISIBLE);
                 text_mph.setVisibility(View.INVISIBLE);
+                stopButton.setVisibility(View.INVISIBLE);
+                startButton.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
                 startActivity(intent);
                 //test.setVisibility(View.VISIBLE);           // speed pops up
@@ -94,17 +98,18 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         TextView meters = findViewById(R.id.userSpeed);
         TextView mph = findViewById(R.id.userSpeed_mph);
+        DecimalFormat df2 = new DecimalFormat("#.##");
 
         if (location == null) {
             // txt.setText("-.- m/s");
         } else if (SettingsActivity.metric) {
             float nCurrentSpeed = location.getSpeed();
 
-            meters.setText(nCurrentSpeed + " m/s");
+            meters.setText(df2.format(nCurrentSpeed*3.6) + " km/h");
         } else {
             float nCurrentSpeed = location.getSpeed();
 
-            mph.setText(nCurrentSpeed * 2.23694 + " mph");
+            mph.setText(df2.format(nCurrentSpeed * 2.23694 )+ " mph");
         }
     }
 

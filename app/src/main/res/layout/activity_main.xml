@@ -38,7 +38,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0.0 m/s"
+        android:text="0.0 km/h"
         android:textSize="48sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/startButton"
