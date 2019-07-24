@@ -43,11 +43,9 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
 
 
-
-                if(SettingsActivity.metric) {
+                if (SettingsActivity.metric) {
                     text_meters.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     text_mph.setVisibility(View.VISIBLE);
                 }
                 // speed pops up
@@ -77,7 +75,7 @@ public class MainActivity extends Activity implements LocationListener {
             // When user clicks start button do this
             public void onClick(View view) {
                 TextView test = findViewById(R.id.button_settings);
-                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 //test.setVisibility(View.VISIBLE);           // speed pops up
                 //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
@@ -85,7 +83,6 @@ public class MainActivity extends Activity implements LocationListener {
                 //onLocationChanged(null);                    // calls the current speed tracker
             }
         });
-
 
 
     }
@@ -97,17 +94,18 @@ public class MainActivity extends Activity implements LocationListener {
 
         if (location == null) {
             // txt.setText("-.- m/s");
-        }
-        else{
+        } else if (SettingsActivity.metric) {
             float nCurrentSpeed = location.getSpeed();
-            if(SettingsActivity.metric) {
-                meters.setText(nCurrentSpeed + " m/s");
-            }else{
-                mph.setText(nCurrentSpeed*2.23694 + " mph");
-            }
-        }
 
+            meters.setText(nCurrentSpeed + " m/s");
+        } else {
+            float nCurrentSpeed = location.getSpeed();
+
+            mph.setText(nCurrentSpeed * 2.23694 + " mph");
+        }
     }
+
+
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
