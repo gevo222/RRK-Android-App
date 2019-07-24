@@ -1,12 +1,18 @@
 package com.example.roadragekiller;
 
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -71,7 +77,23 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     public void onProviderEnabled(String s) {
 
+
+        final Button settingsButton = findViewById(R.id.button_settings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // When user clicks start button do this
+            public void onClick(View view) {
+                TextView test = findViewById(R.id.button_settings);
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
+                //test.setVisibility(View.VISIBLE);           // speed pops up
+                //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
+
+                //onLocationChanged(null);                    // calls the current speed tracker
+            }
+        });
     }
+
 
     @Override
     public void onProviderDisabled(String s) {
