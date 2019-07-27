@@ -80,11 +80,10 @@ public class MainActivity extends Activity implements LocationListener {
                 TextView test = findViewById(R.id.button_settings);
                 text_meters.setVisibility(View.INVISIBLE);
                 text_mph.setVisibility(View.INVISIBLE);
-
-                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
-                startActivity(intent);
                 stopButton.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
                 //test.setVisibility(View.VISIBLE);           // speed pops up
                 //settingsButton.setVisibility(View.INVISIBLE);  // button goes away
 
@@ -109,6 +108,7 @@ public class MainActivity extends Activity implements LocationListener {
         TextView meters = findViewById(R.id.userSpeed);
         TextView mph = findViewById(R.id.userSpeed_mph);
         DecimalFormat df2 = new DecimalFormat("#");
+
 
         if (location == null) {
             // txt.setText("-.- m/s");
