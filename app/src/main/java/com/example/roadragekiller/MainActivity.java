@@ -14,12 +14,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.here.android.mpa.common.ApplicationContext;
-import com.here.android.mpa.common.MapEngine;
-import com.here.android.mpa.common.OnEngineInitListener;
-import com.here.android.mpa.common.PositioningManager;
-import com.here.android.mpa.guidance.NavigationManager;
-
 import java.text.DecimalFormat;
 
 public class MainActivity extends Activity implements LocationListener {
@@ -105,30 +99,9 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
 
-        initSDK();
 
 
     }
-
-    private void initSDK() {
-        ApplicationContext appContext = new ApplicationContext(this);
-
-        MapEngine.getInstance().init(appContext, new OnEngineInitListener() {
-            @Override
-            public void onEngineInitializationCompleted(Error error) {
-                if (error == Error.NONE) {
-
-                    MapEngine.getInstance().onResume();
-                    startPositioningManager();
-                    startNavigationManager();
-
-                } else {
-                    //handle error here
-                }
-            }
-        });
-    }
-
 
     @Override
     public void onLocationChanged(Location location) {
@@ -147,22 +120,6 @@ public class MainActivity extends Activity implements LocationListener {
             float nCurrentSpeed = location.getSpeed();
 
             mph.setText(df2.format(nCurrentSpeed * 2.23694 )+ " mph");
-        }
-    }
-
-    private void startPositioningManager() {
-        boolean positioningManagerStarted = PositioningManager.getInstance().start(PositioningManager.LocationMethod.GPS_NETWORK);
-
-        if (!positioningManagerStarted) {
-            //handle error here
-        }
-    }
-
-    private void startNavigationManager() {
-        NavigationManager.Error navError = NavigationManager.getInstance().startTracking();
-
-        if (navError != NavigationManager.Error.NONE) {
-            //handle error navError.toString());
         }
     }
 
