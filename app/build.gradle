@@ -17,14 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
-repositories {
-    flatDir {
-        dirs 'libs'
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
+
 dependencies {
-    implementation(name:'HERE-sdk', ext:'aar')
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
