@@ -3,12 +3,6 @@
     package="com.example.roadragekiller">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -26,20 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.here.android.maps.appid" android:value="{69KlKkE8t5TiJyS6kyFy}"/>
-        <meta-data android:name="com.here.android.maps.apptoken" android:value="{I3zn41YMNwAvpVbUnlah1A}"/>
-        <meta-data android:name="com.here.android.maps.license.key" android:value="{VYdsklVRhySSXPf+gF4jtREUIOFjfu5/R9SQ4SWKHDDgW5YGJy7fq0zvoOUE0pdqAWOTwg1wK91TJOqU848cu0DTIIDaTHtFJTv5k33jaIP55s0i1Y2M84rjbMXWVpEo0TTWBU2XEHb8jZyNNTsUscp9B5XM8OrvaRD6MjVadz3aToa4ZNP9cq+JP7iGlI7pdbgtqN8Nj4/bozZOdsSkin8Idymf9Mrsh1vvXToVn59l+MPDi1/K/EHwGxpvD+0q1CoSgyRSTvWYzBtsmc0PTw2pAmiDIAzANQbyKCbhzT7MLyxGg/HLgyr1DDtJiy/qN8BzCE+MVE2LqFL0hdOv9dTl6I6nzmyWPiGPKyHst4MN279c6nA1wEfxQdv7f77a8jPoc2bIy0mTd0RRfyO/tITx+Wax3v5Amzlda1Lqk4GErDWk6ofGIxKRKG0+81uVhpPTw8Esp8/3uh2QYsb46eJp8ORUMOFtjTsKZ2WnqCoKgGjU9Zubx06jfo1MVpMDAcE+cN7kBdFPt5MaN1ZJ+ENekjN8+HNj7jLda6QWfOME3nq6AJTaFCveel2SpEBg4t7C15ZGz7LUBDuNTj5OfJ+ZgzLnO2zzK448L6YUbAriKBmc75VRLwudf0pOnqk/uhyIb6KjofvmjHvaJ/bwb8ozmcY5jCNBIO14GzmQqDk=}"/>"/>
-
-        <service
-            android:name="com.here.android.mpa.service.MapService"
-            android:label="HereMapService"
-            android:process="global.Here.Map.Service.v3"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.here.android.mpa.service.MapService.v3" >
-                </action>
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>
