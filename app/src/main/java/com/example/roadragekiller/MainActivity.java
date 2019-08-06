@@ -69,20 +69,6 @@ public class MainActivity extends Activity implements LocationListener {
             lm1 = initLocationManager();
         }
 
-        /*
-        // checks if we have location permission
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            Log.d("RoadRageKiller","Location Manager started");
-
-        }
-        else{
-            //requestPermissions();
-            Log.d("RoadRageKiller","Location Manager error - No permisssions");
-        }
-        */
-
         final TextView text_meters = findViewById(R.id.userSpeed);
         final TextView text_mph = findViewById(R.id.userSpeed_mph);
         final TextView text_speed_limit = findViewById(R.id.speedLimitText);
@@ -103,8 +89,8 @@ public class MainActivity extends Activity implements LocationListener {
             // When user clicks start button do this
             public void onClick(View view) {
                 Log.d("RoadRageKiller","Clicked Start Button");
-                startLocationManager(lm1);
-                startListeners();
+                startLocationManager(lm1);//Android location manager
+                startListeners();//HERE map position manager
                 startPositioningManager();
                 if (SettingsActivity.metric) {
                     text_meters.setVisibility(View.VISIBLE);
@@ -311,9 +297,9 @@ public class MainActivity extends Activity implements LocationListener {
                 if (mgp.getRoadElement() != null) {
                     currentSpeedLimit = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
+                    //TextView data = findViewById(R.id.streetData);
                     limit.setText("Speed Limit:" + currentSpeedLimit);
                     Log.d("RoadRageKiller","SpeedLimit-roadelement");
-
                 }
 
             } else {
