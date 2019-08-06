@@ -76,16 +76,20 @@ public class MainActivity extends Activity implements LocationListener {
         final TextView text_mph = findViewById(R.id.userSpeed_mph);
         final TextView text_speed_limit = findViewById(R.id.speedLimitText);
         final TextView api_status =findViewById(R.id.api_status);
+        final TextView street_info=findViewById(R.id.streetData);
 
         final Button settingsButton = findViewById(R.id.button_settings);
         final Button startButton = findViewById(R.id.startButton);
         final Button stopButton = findViewById(R.id.stopButton);
         final Button stats = findViewById(R.id.button_stats);
 
-
+        SettingsActivity.metric=false;
         text_meters.setVisibility(View.INVISIBLE);
         text_mph.setVisibility(View.INVISIBLE);
+        text_speed_limit.setVisibility(View.INVISIBLE);
+        street_info.setVisibility(View.INVISIBLE);
         api_status.setTextColor(Color.parseColor("#FF0000"));
+
         //Start button UI element
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +115,7 @@ public class MainActivity extends Activity implements LocationListener {
                 // speed pops up
                 startButton.setVisibility(View.INVISIBLE);  // button goes away
                 stopButton.setVisibility(View.VISIBLE);
+                text_speed_limit.setVisibility(View.VISIBLE);
                 onLocationChanged(null);                    // calls the current speed tracker
             }
         });
@@ -134,6 +139,7 @@ public class MainActivity extends Activity implements LocationListener {
                 text_mph.setVisibility(View.INVISIBLE);
                 text_meters.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.INVISIBLE);
+                text_speed_limit.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
             }
         });
@@ -182,13 +188,15 @@ public class MainActivity extends Activity implements LocationListener {
                     startPositioningManager();
                     startNavigationManager();
                     sdkINIT=true;
+                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_SHORT);
+                    readyToaster.show();
                     Log.d("RoadRageKiller","initSDK");
                 } else {
                     //handle error here
                     Log.d("RoadRageKiller","initSDK error");
                     String errorText = error.getDetails();
                     Log.d("RoadRageKiller",errorText);
-                    Toast errorToaster = Toast.makeText(getApplicationContext(), errorText,Toast.LENGTH_SHORT);
+                    Toast errorToaster = Toast.makeText(getApplicationContext(), errorText,Toast.LENGTH_LONG);
                     errorToaster.show();
                     sdkINIT=false;
                 }
