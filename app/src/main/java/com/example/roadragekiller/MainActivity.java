@@ -188,7 +188,7 @@ public class MainActivity extends Activity implements LocationListener {
                     startPositioningManager();
                     startNavigationManager();
                     sdkINIT=true;
-                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_SHORT);
+                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_LONG);
                     readyToaster.show();
                     Log.d("RoadRageKiller","initSDK");
                 } else {
