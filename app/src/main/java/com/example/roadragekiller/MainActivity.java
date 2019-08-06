@@ -320,14 +320,15 @@ public class MainActivity extends Activity implements LocationListener {
                 MatchedGeoPosition mgp = (MatchedGeoPosition) geoPosition;
 
                 double currentSpeed = mgp.getSpeed();
-                double currentSpeedLimitInMetersPerSecond = 0;
-
+                double speedLimit = 0;
+                int speedLimitMPH=0;
                 if (mgp.getRoadElement() != null && currentSpeed >5) {
-                    currentSpeedLimitInMetersPerSecond = mgp.getRoadElement().getSpeedLimit();
+                    speedLimit = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
                     //TextView data = findViewById(R.id.streetData);
-                    limit.setText("Speed Limit:" + metersPerSecToMPH(currentSpeedLimitInMetersPerSecond));
-                    Log.d("RoadRageKiller","SpeedLimit-roadelement");
+                    //limit.setText("Speed Limit:" + metersPerSecToMPH(speedLimit));
+                    speedLimitMPH=metersPerSecToMPH(speedLimit);
+                    limit.setText("Speed Limit: "+getClosestSpeedLimit(speedLimitMPH));
                 }
 
             } else {
@@ -353,6 +354,9 @@ public class MainActivity extends Activity implements LocationListener {
     public int metersPerSecToMPH(double speed){
         double temp_speed = (int) speed * 2.23694;
         return (int)temp_speed;
+    }
+    public int getClosestSpeedLimit(int speed){
+        return (speed + 5) / 5 * 5;
     }
     public int metersPerSecToKPH(double speed){
         return 1;
