@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -185,7 +186,10 @@ public class MainActivity extends Activity implements LocationListener {
                 } else {
                     //handle error here
                     Log.d("RoadRageKiller","initSDK error");
-                    Log.d("RoadRageKiller",error.getDetails());
+                    String errorText = error.getDetails();
+                    Log.d("RoadRageKiller",errorText);
+                    Toast errorToaster = Toast.makeText(getApplicationContext(), errorText,Toast.LENGTH_SHORT);
+                    errorToaster.show();
                     sdkINIT=false;
                 }
             }
@@ -310,7 +314,7 @@ public class MainActivity extends Activity implements LocationListener {
                 double currentSpeed = mgp.getSpeed();
                 double currentSpeedLimitInMetersPerSecond = 0;
 
-                if (mgp.getRoadElement() != null) {
+                if (mgp.getRoadElement() != null && currentSpeed >5) {
                     currentSpeedLimitInMetersPerSecond = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
                     //TextView data = findViewById(R.id.streetData);
