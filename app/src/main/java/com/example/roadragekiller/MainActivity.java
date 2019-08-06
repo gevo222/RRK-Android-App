@@ -254,7 +254,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void startLocationManager(LocationManager location){
         if(location!=null) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                location.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                location.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
                 Log.d("RoadRageKiller", "Location Manager Started");
             }
         }else{
