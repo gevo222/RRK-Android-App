@@ -115,8 +115,23 @@
         android:id="@+id/streetData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Street Info:"
-        app:layout_constraintTop_toBottomOf="@+id/speedLimitText"
-        tools:layout_editor_absoluteX="175dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speedLimitText" />
+
+    <TextView
+        android:id="@+id/api_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="API service: not running"
+        android:textColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="137dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

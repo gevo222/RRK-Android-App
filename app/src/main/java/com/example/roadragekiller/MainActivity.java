@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
     int runtime_request =1; //used in .requestPermissions()   for error message
     LocationManager lm1;
     private boolean fetchingDataInProgress = false;
+    boolean sdkINIT=false;
 
 
     @Override
@@ -72,6 +74,7 @@ public class MainActivity extends Activity implements LocationListener {
         final TextView text_meters = findViewById(R.id.userSpeed);
         final TextView text_mph = findViewById(R.id.userSpeed_mph);
         final TextView text_speed_limit = findViewById(R.id.speedLimitText);
+        final TextView api_status =findViewById(R.id.api_status);
 
         final Button settingsButton = findViewById(R.id.button_settings);
         final Button startButton = findViewById(R.id.startButton);
@@ -79,10 +82,9 @@ public class MainActivity extends Activity implements LocationListener {
         final Button stats = findViewById(R.id.button_stats);
 
 
-
         text_meters.setVisibility(View.INVISIBLE);
         text_mph.setVisibility(View.INVISIBLE);
-
+        api_status.setTextColor(Color.parseColor("#FF0000"));
         //Start button UI element
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +92,16 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
                 Log.d("RoadRageKiller","Clicked Start Button");
                 startLocationManager(lm1);//Android location manager
-                startListeners();//HERE map position manager
-                startPositioningManager();
+                if(sdkINIT) {
+                    startListeners();//HERE map position manager
+                    startPositioningManager();
+                    api_status.setText("API service: running");
+                    api_status.setTextColor(Color.parseColor("#31f505"));
+                }else {
+                    initSDK();
+                    Log.d("RoadRageKiller","SDK not initialized");
+
+                }
                 if (SettingsActivity.metric) {
                     text_meters.setVisibility(View.VISIBLE);
                 } else {
@@ -111,8 +121,14 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
                 // speed pops up
                 Log.d("RoadRageKiller","Clicked Stop Button");
-                stopPositioningManager();
-                stopWatching();
+                if(sdkINIT) {
+                    stopPositioningManager();
+                    stopWatching();
+                    api_status.setText("API service: not running");
+                    api_status.setTextColor(Color.parseColor("#FF0000"));
+                }else{
+                    Log.d("RoadRageKiller","SDK not initialized");
+                }
                 text_mph.setVisibility(View.INVISIBLE);
                 text_meters.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.INVISIBLE);
@@ -151,9 +167,10 @@ public class MainActivity extends Activity implements LocationListener {
         initSDK(); //HERE maps sdk
     }
 
+
+    //HERE API init
     private void initSDK() {
         ApplicationContext appContext = new ApplicationContext(this);
-
         MapEngine.getInstance().init(appContext, new OnEngineInitListener() {
             @Override
             public void onEngineInitializationCompleted(Error error) {
@@ -162,29 +179,27 @@ public class MainActivity extends Activity implements LocationListener {
                     MapEngine.getInstance().onResume();
                     startPositioningManager();
                     startNavigationManager();
+                    sdkINIT=true;
                     Log.d("RoadRageKiller","initSDK");
-
-
                 } else {
                     //handle error here
                     Log.d("RoadRageKiller","initSDK error");
                     Log.d("RoadRageKiller",error.getDetails());
-
-
+                    sdkINIT=false;
                 }
             }
         });
     }
 
-
+    //Here api posManager
     private void startPositioningManager() {
         boolean positioningManagerStarted = PositioningManager.getInstance().start(PositioningManager.LocationMethod.GPS_NETWORK);
-
         if (!positioningManagerStarted) {
             //handle error here
         }
     }
 
+    //Here api posManagerStop
     private void stopPositioningManager() {
         PositioningManager.getInstance().stop();
     }
@@ -197,7 +212,7 @@ public class MainActivity extends Activity implements LocationListener {
         }
     }
 
-
+    //Android Location Manager
     @Override
     public void onLocationChanged(Location location) {
         TextView meters = findViewById(R.id.userSpeed);
@@ -292,13 +307,13 @@ public class MainActivity extends Activity implements LocationListener {
                 MatchedGeoPosition mgp = (MatchedGeoPosition) geoPosition;
 
                 double currentSpeed = mgp.getSpeed();
-                double currentSpeedLimit = 0;
+                double currentSpeedLimitInMetersPerSecond = 0;
 
                 if (mgp.getRoadElement() != null) {
-                    currentSpeedLimit = mgp.getRoadElement().getSpeedLimit();
+                    currentSpeedLimitInMetersPerSecond = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
                     //TextView data = findViewById(R.id.streetData);
-                    limit.setText("Speed Limit:" + currentSpeedLimit);
+                    limit.setText("Speed Limit:" + metersPerSecToMPH(currentSpeedLimitInMetersPerSecond));
                     Log.d("RoadRageKiller","SpeedLimit-roadelement");
                 }
 
@@ -320,6 +335,14 @@ public class MainActivity extends Activity implements LocationListener {
     public void stopWatching() {
         PositioningManager.getInstance().removeListener(positionLister);
         MapDataPrefetcher.getInstance().removeListener(prefetcherListener);
+    }
+
+    public int metersPerSecToMPH(double speed){
+        double temp_speed = (int) speed * 2.23694;
+        return (int)temp_speed;
+    }
+    public int metersPerSecToKPH(double speed){
+        return 1;
     }
 }
 
