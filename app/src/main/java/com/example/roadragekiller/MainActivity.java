@@ -126,6 +126,7 @@ public class MainActivity extends Activity implements LocationListener {
                     stopWatching();
                     api_status.setText("API service: not running");
                     api_status.setTextColor(Color.parseColor("#FF0000"));
+                    text_speed_limit.setText("Speed Limit:");
                 }else{
                     Log.d("RoadRageKiller","SDK not initialized");
                 }
