@@ -49,6 +49,7 @@ public class MainActivity extends Activity implements LocationListener {
     };
     int runtime_request =1; //used in .requestPermissions()   for error message
     LocationManager lm1;
+    private boolean fetchingDataInProgress = false;
 
 
     @Override
@@ -92,6 +93,7 @@ public class MainActivity extends Activity implements LocationListener {
         final Button stats = findViewById(R.id.button_stats);
 
 
+
         text_meters.setVisibility(View.INVISIBLE);
         text_mph.setVisibility(View.INVISIBLE);
 
@@ -102,7 +104,8 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
                 Log.d("RoadRageKiller","Clicked Start Button");
                 startLocationManager(lm1);
-
+                startListeners();
+                startPositioningManager();
                 if (SettingsActivity.metric) {
                     text_meters.setVisibility(View.VISIBLE);
                 } else {
@@ -122,6 +125,8 @@ public class MainActivity extends Activity implements LocationListener {
             public void onClick(View view) {
                 // speed pops up
                 Log.d("RoadRageKiller","Clicked Stop Button");
+                stopPositioningManager();
+                stopWatching();
                 text_mph.setVisibility(View.INVISIBLE);
                 text_meters.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.INVISIBLE);
@@ -186,6 +191,27 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
 
+    private void startPositioningManager() {
+        boolean positioningManagerStarted = PositioningManager.getInstance().start(PositioningManager.LocationMethod.GPS_NETWORK);
+
+        if (!positioningManagerStarted) {
+            //handle error here
+        }
+    }
+
+    private void stopPositioningManager() {
+        PositioningManager.getInstance().stop();
+    }
+
+    private void startNavigationManager() {
+        NavigationManager.Error navError = NavigationManager.getInstance().startTracking();
+
+        if (navError != NavigationManager.Error.NONE) {
+            //handle error navError.toString());
+        }
+    }
+
+
     @Override
     public void onLocationChanged(Location location) {
         TextView meters = findViewById(R.id.userSpeed);
@@ -205,21 +231,6 @@ public class MainActivity extends Activity implements LocationListener {
         }
     }
 
-    private void startPositioningManager() {
-        boolean positioningManagerStarted = PositioningManager.getInstance().start(PositioningManager.LocationMethod.GPS_NETWORK);
-
-        if (!positioningManagerStarted) {
-            //handle error here
-        }
-    }
-
-    private void startNavigationManager() {
-        NavigationManager.Error navError = NavigationManager.getInstance().startTracking();
-
-        if (navError != NavigationManager.Error.NONE) {
-            //handle error navError.toString());
-        }
-    }
 
     public LocationManager initLocationManager(){
         LocationManager location = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -238,17 +249,14 @@ public class MainActivity extends Activity implements LocationListener {
     }
     public void pauseLocationManager(LocationManager location){
 
-    }
+}
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
     }
-
     @Override
     public void onProviderEnabled(String s) {
-
-
 
     }
 
@@ -273,8 +281,6 @@ public class MainActivity extends Activity implements LocationListener {
 
     }
 
-    private boolean fetchingDataInProgress = false;
-
     MapDataPrefetcher.Adapter prefetcherListener = new MapDataPrefetcher.Adapter() {
         @Override
         public void onStatus(int requestId, PrefetchStatus status) {
@@ -284,9 +290,11 @@ public class MainActivity extends Activity implements LocationListener {
         }
     };
 
-    PositioningManager.OnPositionChangedListener positionListener = new PositioningManager.OnPositionChangedListener() {
+    PositioningManager.OnPositionChangedListener positionLister = new PositioningManager.OnPositionChangedListener() {
         @Override
         public void onPositionUpdated(PositioningManager.LocationMethod locationMethod, GeoPosition geoPosition, boolean b) {
+            Log.d("RoadRageKiller","Here:onPositionUpdated");
+
             if (PositioningManager.getInstance().getRoadElement() == null && !fetchingDataInProgress) {
                 GeoBoundingBox areaAround = new GeoBoundingBox(geoPosition.getCoordinate(), 500, 500);
                 MapDataPrefetcher.getInstance().fetchMapData(areaAround);
@@ -319,5 +327,13 @@ public class MainActivity extends Activity implements LocationListener {
         }
     };
 
+    public void startListeners() {
+        PositioningManager.getInstance().addListener(new WeakReference<>(positionLister));
+        MapDataPrefetcher.getInstance().addListener(prefetcherListener);
+    }
+    public void stopWatching() {
+        PositioningManager.getInstance().removeListener(positionLister);
+        MapDataPrefetcher.getInstance().removeListener(prefetcherListener);
+    }
 }
 
