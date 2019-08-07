@@ -57,6 +57,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
     boolean sdkINIT=false;
     float nCurrentSpeed;
     int globalSpeedLimit=0;
+    boolean stopClicked = true;
 
 
     @Override
@@ -120,6 +121,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                 stopButton.setVisibility(View.VISIBLE);
                 text_speed_limit.setVisibility(View.VISIBLE);
                 onLocationChanged(null);                    // calls the current speed tracker
+                stopClicked = false;
             }
         });
 
@@ -144,6 +146,11 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                 stopButton.setVisibility(View.INVISIBLE);
                 text_speed_limit.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
+                GifImageView warningGif = findViewById(R.id.warninggif);
+                warningGif.setVisibility(View.INVISIBLE);
+                stopClicked = true;
+
+
             }
         });
 
@@ -305,7 +312,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
 
         }
 
-        if (nCurrentSpeed > globalSpeedLimit == true) {
+        if (nCurrentSpeed > globalSpeedLimit == true && stopClicked == false) {
             warningGif.setVisibility(View.VISIBLE);
         } else if (nCurrentSpeed > globalSpeedLimit == false) {
             warningGif.setVisibility(View.INVISIBLE);
