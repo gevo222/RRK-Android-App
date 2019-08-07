@@ -215,7 +215,7 @@ public class MainActivity extends Activity implements LocationListener {
                     startPositioningManager();
                     startNavigationManager();
                     sdkINIT=true;
-                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_SHORT);
+                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_LONG);
                     readyToaster.show();
                     Log.d("RoadRageKiller","initSDK");
                 } else {
@@ -315,7 +315,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void startLocationManager(LocationManager location){
         if(location!=null) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                location.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                location.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
                 Log.d("RoadRageKiller", "Location Manager Started");
             }
         }else{
@@ -381,14 +381,15 @@ public class MainActivity extends Activity implements LocationListener {
                 MatchedGeoPosition mgp = (MatchedGeoPosition) geoPosition;
 
                 double currentSpeed = mgp.getSpeed();
-                double currentSpeedLimitInMetersPerSecond = 0;
-
+                double speedLimit = 0;
+                int speedLimitMPH=0;
                 if (mgp.getRoadElement() != null && currentSpeed >5) {
-                    currentSpeedLimitInMetersPerSecond = mgp.getRoadElement().getSpeedLimit();
+                    speedLimit = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
                     //TextView data = findViewById(R.id.streetData);
-                    limit.setText("Speed Limit:" + metersPerSecToMPH(currentSpeedLimitInMetersPerSecond));
-                    Log.d("RoadRageKiller","SpeedLimit-roadelement");
+                    //limit.setText("Speed Limit:" + metersPerSecToMPH(speedLimit));
+                    speedLimitMPH=metersPerSecToMPH(speedLimit);
+                    limit.setText("Speed Limit: "+getClosestSpeedLimit(speedLimitMPH));
                 }
 
             } else {
@@ -414,6 +415,9 @@ public class MainActivity extends Activity implements LocationListener {
     public int metersPerSecToMPH(double speed){
         double temp_speed = (int) speed * 2.23694;
         return (int)temp_speed;
+    }
+    public int getClosestSpeedLimit(int speed){
+        return (speed + 5) / 5 * 5;
     }
     public int metersPerSecToKPH(double speed){
         return 1;
