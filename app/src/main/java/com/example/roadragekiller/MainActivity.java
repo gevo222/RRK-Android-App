@@ -58,6 +58,9 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
     float nCurrentSpeed;
     int globalSpeedLimit=0;
     boolean stopClicked = true;
+    double warningTime;
+    double nonWarningTime;
+    double warningTimePercentage;
 
 
     @Override
@@ -298,6 +301,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         TextView mph = findViewById(R.id.userSpeed_mph);
         DecimalFormat df2 = new DecimalFormat("#");
         GifImageView warningGif = findViewById(R.id.warninggif);
+        TextView warningTimePText = findViewById(R.id.warningTimePText);
 
         if (location == null) {
             // txt.setText("-.- m/s");
@@ -313,11 +317,19 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         }
 
         if (nCurrentSpeed > globalSpeedLimit == true && stopClicked == false) {
-            warningGif.setVisibility(View.VISIBLE);
-        } else if (nCurrentSpeed > globalSpeedLimit == false) {
+
+                warningGif.setVisibility(View.VISIBLE);
+                warningTime++;
+
+        } else if (nCurrentSpeed > globalSpeedLimit == false && stopClicked == false) {
             warningGif.setVisibility(View.INVISIBLE);
+            nonWarningTime++;
         } else {
             warningGif.setVisibility(View.INVISIBLE);
+        }
+        if (nonWarningTime!=0 || warningTime !=0) {
+            warningTimePercentage = warningTime/(nonWarningTime + warningTime);
+            warningTimePText.setText(df2.format(warningTimePercentage*100) + "%");
         }
     }
 
