@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -12,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,12 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
-//This is for the HERE maps API
 import com.here.android.mpa.common.ApplicationContext;
 import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.GeoPosition;
@@ -36,11 +31,12 @@ import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.prefetcher.MapDataPrefetcher;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
+
+import pl.droidsonroids.gif.GifImageView;
+
+//This is for the HERE maps API
 
 public class MainActivity extends Activity implements LocationListener,GPSfunctions {
 
@@ -59,6 +55,8 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
     LocationManager lm1;
     private boolean fetchingDataInProgress = false;
     boolean sdkINIT=false;
+    float nCurrentSpeed;
+    int globalSpeedLimit=0;
 
 
     @Override
@@ -292,17 +290,27 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         TextView meters = findViewById(R.id.userSpeed);
         TextView mph = findViewById(R.id.userSpeed_mph);
         DecimalFormat df2 = new DecimalFormat("#");
+        GifImageView warningGif = findViewById(R.id.warninggif);
 
         if (location == null) {
             // txt.setText("-.- m/s");
         } else if (SettingsActivity.metric) {
-            float nCurrentSpeed = location.getSpeed();
+            nCurrentSpeed = location.getSpeed();
 
             meters.setText(df2.format(nCurrentSpeed*3.6) + " km/h");
         } else {
-            float nCurrentSpeed = location.getSpeed();
+            nCurrentSpeed = location.getSpeed();
 
             mph.setText(df2.format(nCurrentSpeed * 2.23694 )+ " mph");
+
+        }
+
+        if (nCurrentSpeed > globalSpeedLimit == true) {
+            warningGif.setVisibility(View.VISIBLE);
+        } else if (nCurrentSpeed > globalSpeedLimit == false) {
+            warningGif.setVisibility(View.INVISIBLE);
+        } else {
+            warningGif.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -390,6 +398,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                     //limit.setText("Speed Limit:" + metersPerSecToMPH(speedLimit));
                     speedLimitMPH=metersPerSecToMPH(speedLimit);
                     limit.setText("Speed Limit: "+getClosestSpeedLimit(speedLimitMPH));
+                    globalSpeedLimit = getClosestSpeedLimit(speedLimitMPH);
                 }
 
             } else {
