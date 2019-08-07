@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,12 +12,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,10 +38,13 @@ import com.here.android.mpa.prefetcher.MapDataPrefetcher;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 
 public class MainActivity extends Activity implements LocationListener {
+
+    private static final  int REQUEST_CODE_ASK_PERMISSIONS=1;
 
     //This is for requesting permissions
     private static final String[] RUNTIME_PERMISSIONS = {
@@ -65,11 +71,10 @@ public class MainActivity extends Activity implements LocationListener {
         if(hasPermissions(this,RUNTIME_PERMISSIONS)){
             Log.d("RoadRageKiller","Runtime permissions already granted");
             lm1 = initLocationManager();
-
+            initSDK();
         }else{
             Log.d("RoadRageKiller","Runtime permissions not granted");
             ActivityCompat.requestPermissions(this,RUNTIME_PERMISSIONS,runtime_request);
-            lm1 = initLocationManager();
         }
 
         final TextView text_meters = findViewById(R.id.userSpeed);
@@ -171,19 +176,41 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });
 
-        Log.d("RoadRageKiller","Calling initSDK");
-        initSDK(); //HERE maps sdk
+        //Log.d("RoadRageKiller","Calling initSDK");
     }
 
 
     //HERE API init
     private void initSDK() {
+        /*
+        // Set path of isolated disk cache
+        String diskCacheRoot = Environment.getExternalStorageDirectory().getPath()
+                + File.separator + ".isolated-here-maps";
+        // Retrieve intent name from manifest
+        String intentName = "";
+        try {
+            ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            intentName = bundle.getString("INTENT_NAME");
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("MainActivity",
+                    "Failed to find intent name, NameNotFound: " + e.getMessage());
+        }
+        boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
+                diskCacheRoot, intentName);
+        if (!success) {
+            Toast.makeText(this, "Operation 'setIsolatedDiskCacheRootPath' was not successful",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        */
+
         ApplicationContext appContext = new ApplicationContext(this);
         MapEngine.getInstance().init(appContext, new OnEngineInitListener() {
             @Override
             public void onEngineInitializationCompleted(Error error) {
                 if (error == Error.NONE) {
-
                     MapEngine.getInstance().onResume();
                     startPositioningManager();
                     startNavigationManager();
@@ -193,15 +220,49 @@ public class MainActivity extends Activity implements LocationListener {
                     Log.d("RoadRageKiller","initSDK");
                 } else {
                     //handle error here
+                    Log.e("RoadRagekiller", " init error: " + error + ", " + error.getDetails(), error.getThrowable());
                     Log.d("RoadRageKiller","initSDK error");
                     String errorText = error.getDetails();
-                    Log.d("RoadRageKiller",errorText);
                     Toast errorToaster = Toast.makeText(getApplicationContext(), errorText,Toast.LENGTH_LONG);
                     errorToaster.show();
                     sdkINIT=false;
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS: {
+                for (int index = 0; index < permissions.length; index++) {
+                    if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+
+                        /*
+                         * If the user turned down the permission request in the past and chose the
+                         * Don't ask again option in the permission request system dialog.
+                         */
+                        if (!ActivityCompat
+                                .shouldShowRequestPermissionRationale(this, permissions[index])) {
+                            Toast.makeText(this, "Required permission " + permissions[index]
+                                            + " not granted. "
+                                            + "Please go to settings and turn on for sample app",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(this, "Required permission " + permissions[index]
+                                    + " not granted", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                Log.d("RoadRageKiller","Location Manager Initialized + initSDK()");
+                lm1 = initLocationManager();
+                initSDK();
+                break;
+            }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     //Here api posManager
