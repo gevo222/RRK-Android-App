@@ -42,7 +42,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 
-public class MainActivity extends Activity implements LocationListener {
+public class MainActivity extends Activity implements LocationListener,GPSfunctions {
 
     private static final  int REQUEST_CODE_ASK_PERMISSIONS=1;
 
@@ -181,7 +181,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 
     //HERE API init
-    private void initSDK() {
+    public void initSDK() {
         /*
         // Set path of isolated disk cache
         String diskCacheRoot = Environment.getExternalStorageDirectory().getPath()
@@ -266,7 +266,7 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     //Here api posManager
-    private void startPositioningManager() {
+    public void startPositioningManager() {
         boolean positioningManagerStarted = PositioningManager.getInstance().start(PositioningManager.LocationMethod.GPS_NETWORK);
         if (!positioningManagerStarted) {
             //handle error here
@@ -274,11 +274,11 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     //Here api posManagerStop
-    private void stopPositioningManager() {
+    public void stopPositioningManager() {
         PositioningManager.getInstance().stop();
     }
 
-    private void startNavigationManager() {
+    public void startNavigationManager() {
         NavigationManager.Error navError = NavigationManager.getInstance().startTracking();
 
         if (navError != NavigationManager.Error.NONE) {
