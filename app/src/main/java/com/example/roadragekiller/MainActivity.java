@@ -38,9 +38,9 @@ import pl.droidsonroids.gif.GifImageView;
 
 //This is for the HERE maps API
 
-public class MainActivity extends Activity implements LocationListener,GPSfunctions {
+public class MainActivity extends Activity implements LocationListener, GPSfunctions {
 
-    private static final  int REQUEST_CODE_ASK_PERMISSIONS=1;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 1;
 
     //This is for requesting permissions
     private static final String[] RUNTIME_PERMISSIONS = {
@@ -51,12 +51,12 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.ACCESS_NETWORK_STATE
     };
-    int runtime_request =1; //used in .requestPermissions()   for error message
+    int runtime_request = 1; //used in .requestPermissions()   for error message
     LocationManager lm1;
     private boolean fetchingDataInProgress = false;
-    boolean sdkINIT=false;
+    boolean sdkINIT = false;
     float nCurrentSpeed;
-    int globalSpeedLimit=0;
+    int globalSpeedLimit = 0;
     boolean stopClicked = true;
     double warningTime;
     double nonWarningTime;
@@ -70,27 +70,27 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
 
 
         //permission check & request  + init Location Manager
-        if(hasPermissions(this,RUNTIME_PERMISSIONS)){
-            Log.d("RoadRageKiller","Runtime permissions already granted");
+        if (hasPermissions(this, RUNTIME_PERMISSIONS)) {
+            Log.d("RoadRageKiller", "Runtime permissions already granted");
             lm1 = initLocationManager();
             initSDK();
-        }else{
-            Log.d("RoadRageKiller","Runtime permissions not granted");
-            ActivityCompat.requestPermissions(this,RUNTIME_PERMISSIONS,runtime_request);
+        } else {
+            Log.d("RoadRageKiller", "Runtime permissions not granted");
+            ActivityCompat.requestPermissions(this, RUNTIME_PERMISSIONS, runtime_request);
         }
 
         final TextView text_meters = findViewById(R.id.userSpeed);
         final TextView text_mph = findViewById(R.id.userSpeed_mph);
         final TextView text_speed_limit = findViewById(R.id.speedLimitText);
-        final TextView api_status =findViewById(R.id.api_status);
-        final TextView street_info=findViewById(R.id.streetData);
+        final TextView api_status = findViewById(R.id.api_status);
+        final TextView street_info = findViewById(R.id.streetData);
 
         final Button settingsButton = findViewById(R.id.button_settings);
         final Button startButton = findViewById(R.id.startButton);
         final Button stopButton = findViewById(R.id.stopButton);
         final Button stats = findViewById(R.id.button_stats);
 
-        SettingsActivity.metric=false;
+        SettingsActivity.metric = false;
         text_meters.setVisibility(View.INVISIBLE);
         text_mph.setVisibility(View.INVISIBLE);
         text_speed_limit.setVisibility(View.INVISIBLE);
@@ -102,16 +102,16 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
             @Override
             // When user clicks start button do this
             public void onClick(View view) {
-                Log.d("RoadRageKiller","Clicked Start Button");
+                Log.d("RoadRageKiller", "Clicked Start Button");
                 startLocationManager(lm1);//Android location manager
-                if(sdkINIT) {
+                if (sdkINIT) {
                     startListeners();//HERE map position manager
                     startPositioningManager();
                     api_status.setText("API service: running");
                     api_status.setTextColor(Color.parseColor("#31f505"));
-                }else {
+                } else {
                     initSDK();
-                    Log.d("RoadRageKiller","SDK not initialized");
+                    Log.d("RoadRageKiller", "SDK not initialized");
 
                 }
                 if (SettingsActivity.metric) {
@@ -134,15 +134,15 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
             // When user clicks stop button do this
             public void onClick(View view) {
                 // speed pops up
-                Log.d("RoadRageKiller","Clicked Stop Button");
-                if(sdkINIT) {
+                Log.d("RoadRageKiller", "Clicked Stop Button");
+                if (sdkINIT) {
                     stopPositioningManager();
                     stopWatching();
                     api_status.setText("API service: not running");
                     api_status.setTextColor(Color.parseColor("#FF0000"));
                     text_speed_limit.setText("Speed Limit:");
-                }else{
-                    Log.d("RoadRageKiller","SDK not initialized");
+                } else {
+                    Log.d("RoadRageKiller", "SDK not initialized");
                 }
                 text_mph.setVisibility(View.INVISIBLE);
                 text_meters.setVisibility(View.INVISIBLE);
@@ -162,14 +162,14 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
             @Override
             // When user clicks start button do this
             public void onClick(View view) {
-                Log.d("RoadRageKiller","Clicked Settings Button");
+                Log.d("RoadRageKiller", "Clicked Settings Button");
 
                 TextView test = findViewById(R.id.button_settings);
                 text_meters.setVisibility(View.INVISIBLE);
                 text_mph.setVisibility(View.INVISIBLE);
                 stopButton.setVisibility(View.INVISIBLE);
                 startButton.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
@@ -178,8 +178,8 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         stats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("RoadRageKiller","Clicked Stats Button");
-                Intent intent = new Intent(MainActivity.this,StatsActivity.class);
+                Log.d("RoadRageKiller", "Clicked Stats Button");
+                Intent intent = new Intent(MainActivity.this, StatsActivity.class);
                 startActivity(intent);
             }
         });
@@ -222,18 +222,18 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                     MapEngine.getInstance().onResume();
                     startPositioningManager();
                     startNavigationManager();
-                    sdkINIT=true;
-                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready",Toast.LENGTH_LONG);
+                    sdkINIT = true;
+                    Toast readyToaster = Toast.makeText(getApplicationContext(), "Here API initialized. Ready", Toast.LENGTH_LONG);
                     readyToaster.show();
-                    Log.d("RoadRageKiller","initSDK");
+                    Log.d("RoadRageKiller", "initSDK");
                 } else {
                     //handle error here
                     Log.e("RoadRagekiller", " init error: " + error + ", " + error.getDetails(), error.getThrowable());
-                    Log.d("RoadRageKiller","initSDK error");
+                    Log.d("RoadRageKiller", "initSDK error");
                     String errorText = error.getDetails();
-                    Toast errorToaster = Toast.makeText(getApplicationContext(), errorText,Toast.LENGTH_LONG);
+                    Toast errorToaster = Toast.makeText(getApplicationContext(), errorText, Toast.LENGTH_LONG);
                     errorToaster.show();
-                    sdkINIT=false;
+                    sdkINIT = false;
                 }
             }
         });
@@ -263,7 +263,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                         }
                     }
                 }
-                Log.d("RoadRageKiller","Location Manager Initialized + initSDK()");
+                Log.d("RoadRageKiller", "Location Manager Initialized + initSDK()");
                 lm1 = initLocationManager();
                 initSDK();
                 break;
@@ -308,18 +308,18 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         } else if (SettingsActivity.metric) {
             nCurrentSpeed = location.getSpeed();
 
-            meters.setText(df2.format(nCurrentSpeed*3.6) + " km/h");
+            meters.setText(df2.format(nCurrentSpeed * 3.6) + " km/h");
         } else {
             nCurrentSpeed = location.getSpeed();
 
-            mph.setText(df2.format(nCurrentSpeed * 2.23694 )+ " mph");
+            mph.setText(df2.format(nCurrentSpeed * 2.23694) + " mph");
 
         }
 
         if (nCurrentSpeed > globalSpeedLimit == true && stopClicked == false) {
 
-                warningGif.setVisibility(View.VISIBLE);
-                warningTime++;
+            warningGif.setVisibility(View.VISIBLE);
+            warningTime++;
 
         } else if (nCurrentSpeed > globalSpeedLimit == false && stopClicked == false) {
             warningGif.setVisibility(View.INVISIBLE);
@@ -327,36 +327,39 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         } else {
             warningGif.setVisibility(View.INVISIBLE);
         }
-        if (nonWarningTime!=0 || warningTime !=0) {
-            warningTimePercentage = warningTime/(nonWarningTime + warningTime);
-            warningTimePText.setText(df2.format(warningTimePercentage*100) + "%");
+        if (nonWarningTime != 0 || warningTime != 0) {
+            warningTimePercentage = warningTime / (nonWarningTime + warningTime);
+            warningTimePText.setText(df2.format(warningTimePercentage * 100) + "%");
         }
     }
 
 
-    public LocationManager initLocationManager(){
+    public LocationManager initLocationManager() {
         LocationManager location = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        Log.d("RoadRageKiller","Location Manager Initialized");
+        Log.d("RoadRageKiller", "Location Manager Initialized");
         return location;
     }
-    public void startLocationManager(LocationManager location){
-        if(location!=null) {
+
+    public void startLocationManager(LocationManager location) {
+        if (location != null) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 location.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
                 Log.d("RoadRageKiller", "Location Manager Started");
             }
-        }else{
+        } else {
             Log.d("RoadRageKiller", "Location Manager Start error - Null");
         }
     }
-    public void pauseLocationManager(LocationManager location){
 
-}
+    public void pauseLocationManager(LocationManager location) {
+
+    }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
     }
+
     @Override
     public void onProviderEnabled(String s) {
 
@@ -370,12 +373,11 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
                     return false;
                 }
             }
-        }else{
-            Log.d("RoadRageKiller","OS Build Version Not Met");
+        } else {
+            Log.d("RoadRageKiller", "OS Build Version Not Met");
         }
         return true;
     }
-
 
 
     @Override
@@ -386,7 +388,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
     MapDataPrefetcher.Adapter prefetcherListener = new MapDataPrefetcher.Adapter() {
         @Override
         public void onStatus(int requestId, PrefetchStatus status) {
-            if(status != PrefetchStatus.PREFETCH_IN_PROGRESS) {
+            if (status != PrefetchStatus.PREFETCH_IN_PROGRESS) {
                 fetchingDataInProgress = false;
             }
         }
@@ -395,7 +397,7 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
     PositioningManager.OnPositionChangedListener positionLister = new PositioningManager.OnPositionChangedListener() {
         @Override
         public void onPositionUpdated(PositioningManager.LocationMethod locationMethod, GeoPosition geoPosition, boolean b) {
-            Log.d("RoadRageKiller","Here:onPositionUpdated");
+            Log.d("RoadRageKiller", "Here:onPositionUpdated");
 
             if (PositioningManager.getInstance().getRoadElement() == null && !fetchingDataInProgress) {
                 GeoBoundingBox areaAround = new GeoBoundingBox(geoPosition.getCoordinate(), 500, 500);
@@ -409,14 +411,14 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
 
                 double currentSpeed = mgp.getSpeed();
                 double speedLimit = 0;
-                int speedLimitMPH=0;
-                if (mgp.getRoadElement() != null && currentSpeed >5) {
+                int speedLimitMPH = 0;
+                if (mgp.getRoadElement() != null && currentSpeed > 5) {
                     speedLimit = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
                     //TextView data = findViewById(R.id.streetData);
                     //limit.setText("Speed Limit:" + metersPerSecToMPH(speedLimit));
-                    speedLimitMPH=metersPerSecToMPH(speedLimit);
-                    limit.setText("Speed Limit: "+getClosestSpeedLimit(speedLimitMPH));
+                    speedLimitMPH = metersPerSecToMPH(speedLimit);
+                    limit.setText("Speed Limit: " + getClosestSpeedLimit(speedLimitMPH));
                     globalSpeedLimit = getClosestSpeedLimit(speedLimitMPH);
                 }
 
@@ -435,19 +437,22 @@ public class MainActivity extends Activity implements LocationListener,GPSfuncti
         PositioningManager.getInstance().addListener(new WeakReference<>(positionLister));
         MapDataPrefetcher.getInstance().addListener(prefetcherListener);
     }
+
     public void stopWatching() {
         PositioningManager.getInstance().removeListener(positionLister);
         MapDataPrefetcher.getInstance().removeListener(prefetcherListener);
     }
 
-    public int metersPerSecToMPH(double speed){
+    public int metersPerSecToMPH(double speed) {
         double temp_speed = (int) speed * 2.23694;
-        return (int)temp_speed;
+        return (int) temp_speed;
     }
-    public int getClosestSpeedLimit(int speed){
+
+    public int getClosestSpeedLimit(int speed) {
         return (speed + 5) / 5 * 5;
     }
-    public int metersPerSecToKPH(double speed){
+
+    public int metersPerSecToKPH(double speed) {
         return 1;
     }
 }
