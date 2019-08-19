@@ -304,7 +304,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
         TextView mph = findViewById(R.id.userSpeed_mph);
 
         GifImageView warningGif = findViewById(R.id.warninggif);
-        TextView warningTimePText = findViewById(R.id.warningTimePText);
+
 
 
         if (location == null) {
@@ -333,7 +333,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
         }
         if (nonWarningTime != 0 || warningTime != 0) {
             warningTimePercentage = warningTime / (nonWarningTime + warningTime);
-            warningTimePText.setText(df2.format(warningTimePercentage * 100) + "%");
+
         }
         topSpeed = getTopSpeed(nCurrentSpeed, topSpeed);
         avgSpeed = PositioningManager.getInstance().getAverageSpeed();
@@ -483,7 +483,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
     }
 
     public static double getTopSpeed(double currentSpeed, double topSpeed) {
-        if (currentSpeed > topSpeed) {
+        if (currentSpeed > topSpeed && currentSpeed<70) {
             return currentSpeed;
         } else return topSpeed;
     }
