@@ -60,8 +60,10 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
     boolean stopClicked = true;
     double warningTime;
     double nonWarningTime;
-    double warningTimePercentage;
-
+    static double warningTimePercentage;
+    static DecimalFormat df2 = new DecimalFormat("#");
+    static double topSpeed = 0;
+    static double avgSpeed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,9 +301,10 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
     public void onLocationChanged(Location location) {
         TextView meters = findViewById(R.id.userSpeed);
         TextView mph = findViewById(R.id.userSpeed_mph);
-        DecimalFormat df2 = new DecimalFormat("#");
+
         GifImageView warningGif = findViewById(R.id.warninggif);
         TextView warningTimePText = findViewById(R.id.warningTimePText);
+
 
         if (location == null) {
             // txt.setText("-.- m/s");
@@ -331,6 +334,9 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
             warningTimePercentage = warningTime / (nonWarningTime + warningTime);
             warningTimePText.setText(df2.format(warningTimePercentage * 100) + "%");
         }
+        topSpeed = getTopSpeed(nCurrentSpeed, topSpeed);
+        avgSpeed = PositioningManager.getInstance().getAverageSpeed();
+
     }
 
 
@@ -455,5 +461,33 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
     public int metersPerSecToKPH(double speed) {
         return 1;
     }
-}
 
+
+    public static String setUserRating(double warningTP) {
+
+        if (warningTP == 0) {
+            return "Amazing!";
+        } else if (warningTP <= 0.1) {
+            return "Great!";
+        } else if (warningTP <= 0.3) {
+            return "Good!";
+        } else if (warningTP <= 0.5) {
+            return "Bad";
+        } else if (warningTP < 0.8) {
+            return "Terrible!";
+        } else if (warningTP >= 0.8) {
+            return "WTF are you doing?";
+        }
+        return "None";
+    }
+
+    public static double getTopSpeed(double currentSpeed, double topSpeed) {
+        if (currentSpeed > topSpeed) {
+            return currentSpeed;
+        } else return topSpeed;
+    }
+
+//    public static double getAvgSpeed(){
+//        PositioningManager.getInstance().getAverageSpeed();
+//    }
+}

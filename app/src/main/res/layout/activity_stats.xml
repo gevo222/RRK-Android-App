@@ -82,12 +82,10 @@
 
     <TextView
         android:id="@+id/userRatingText"
-        android:layout_width="93dp"
+        android:layout_width="131dp"
         android:layout_height="34dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="40dp"
         android:text="Good!"
         android:textSize="24sp"
@@ -142,13 +140,11 @@
 
     <TextView
         android:id="@+id/topSpeedText"
-        android:layout_width="93dp"
-        android:layout_height="34dp"
+        android:layout_width="124dp"
+        android:layout_height="33dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:text="0.0 mph"
         android:textSize="24sp"

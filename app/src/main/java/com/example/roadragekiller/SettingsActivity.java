@@ -21,7 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         preferences = getSharedPreferences("PREFS", 0);
-        switchState1 = preferences.getBoolean("switch1",false);
+        switchState1 = preferences.getBoolean("switch1", false);
 
         switch1 = (Switch) findViewById(R.id.switch1);
 
