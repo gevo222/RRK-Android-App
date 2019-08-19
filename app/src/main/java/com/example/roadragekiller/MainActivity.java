@@ -64,6 +64,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
     static DecimalFormat df2 = new DecimalFormat("#");
     static double topSpeed = 0;
     static double avgSpeed = 0;
+    static double dist = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,7 +337,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
         }
         topSpeed = getTopSpeed(nCurrentSpeed, topSpeed);
         avgSpeed = PositioningManager.getInstance().getAverageSpeed();
-
+        dist = NavigationManager.getInstance().getElapsedDistance();
     }
 
 
