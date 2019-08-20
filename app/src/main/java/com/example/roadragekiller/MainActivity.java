@@ -190,33 +190,8 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
         //Log.d("RoadRageKiller","Calling initSDK");
     }
 
-
     //HERE API init
     public void initSDK() {
-        /*
-        // Set path of isolated disk cache
-        String diskCacheRoot = Environment.getExternalStorageDirectory().getPath()
-                + File.separator + ".isolated-here-maps";
-        // Retrieve intent name from manifest
-        String intentName = "";
-        try {
-            ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(),
-                    PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            intentName = bundle.getString("INTENT_NAME");
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("MainActivity",
-                    "Failed to find intent name, NameNotFound: " + e.getMessage());
-        }
-        boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
-                diskCacheRoot, intentName);
-        if (!success) {
-            Toast.makeText(this, "Operation 'setIsolatedDiskCacheRootPath' was not successful",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        */
-
         ApplicationContext appContext = new ApplicationContext(this);
         MapEngine.getInstance().init(appContext, new OnEngineInitListener() {
             @Override
@@ -291,7 +266,6 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
 
     public void startNavigationManager() {
         NavigationManager.Error navError = NavigationManager.getInstance().startTracking();
-
         if (navError != NavigationManager.Error.NONE) {
             //handle error navError.toString());
         }
@@ -305,26 +279,21 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
 
         GifImageView warningGif = findViewById(R.id.warninggif);
 
-
-
         if (location == null) {
             // txt.setText("-.- m/s");
         } else if (SettingsActivity.metric) {
             nCurrentSpeed = location.getSpeed();
-
+            //nCurrentSpeed=metersPerSecToKPH(nCurrentSpeed);
             meters.setText(df2.format(nCurrentSpeed * 3.6) + " km/h");
         } else {
             nCurrentSpeed = location.getSpeed();
-
-            mph.setText(df2.format(nCurrentSpeed * 2.23694) + " mph");
-
+            nCurrentSpeed=metersPerSecToMPH(nCurrentSpeed);
+            mph.setText(nCurrentSpeed + " mph");
         }
 
-        if (nCurrentSpeed > globalSpeedLimit == true && stopClicked == false) {
-
+        if (nCurrentSpeed > globalSpeedLimit && stopClicked == false) {
             warningGif.setVisibility(View.VISIBLE);
             warningTime++;
-
         } else if (nCurrentSpeed > globalSpeedLimit == false && stopClicked == false) {
             warningGif.setVisibility(View.INVISIBLE);
             nonWarningTime++;
@@ -339,7 +308,6 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
         avgSpeed = PositioningManager.getInstance().getAverageSpeed();
         dist = NavigationManager.getInstance().getElapsedDistance();
     }
-
 
     public LocationManager initLocationManager() {
         LocationManager location = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -422,8 +390,6 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
                 if (mgp.getRoadElement() != null && currentSpeed > 5) {
                     speedLimit = mgp.getRoadElement().getSpeedLimit();
                     TextView limit = findViewById(R.id.speedLimitText);
-                    //TextView data = findViewById(R.id.streetData);
-                    //limit.setText("Speed Limit:" + metersPerSecToMPH(speedLimit));
                     speedLimitMPH = metersPerSecToMPH(speedLimit);
                     limit.setText("Speed Limit: " + getClosestSpeedLimit(speedLimitMPH));
                     globalSpeedLimit = getClosestSpeedLimit(speedLimitMPH);
