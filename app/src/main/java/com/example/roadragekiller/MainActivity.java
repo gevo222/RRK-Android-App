@@ -113,7 +113,7 @@ public class MainActivity extends Activity implements LocationListener, GPSfunct
                     api_status.setText("API service: running");
                     api_status.setTextColor(Color.parseColor("#31f505"));
                 } else {
-                    initSDK();
+                    //initSDK();
                     Log.d("RoadRageKiller", "SDK not initialized");
 
                 }
