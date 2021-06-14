@@ -1,5 +1,5 @@
 # RoadRageKiller
-An Android Speedometer application built with Java and REST API. 
+An Android Speedometer application built in Android Studio with Java and REST API. 
 
 # What I Learned
 * My first Android application where I learned the basics of Android Studio and utilizing APIs.
