@@ -1,4 +1,4 @@
-# RoadRageKiller
+# RRK Speedometer
 An Android Speedometer application built in Android Studio with Java and REST API. 
 
 # What I Learned
